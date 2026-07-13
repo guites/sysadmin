@@ -8,4 +8,4 @@ set -u # error on undefined variables
 LOGS_DIR="/data/process-feeds"
 timestamp=$(date -u +'%Y%m%d%H%M%S')
 
-docker exec brcrawl_app bash -c "uv run flask process-feeds > $LOGS_DIR/$timestamp.log"
+timeout 360 docker exec brcrawl_app bash -c "uv run flask process-feeds 2>&1 | tee $LOGS_DIR/$timestamp.log"
