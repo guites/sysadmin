@@ -11,16 +11,17 @@ SCRAPE_OUTPUT="$BASE_DIR/rss.jsonl"
 SCRAPE_CMD="uv run scrapy bearblog_discover -O $SCRAPE_OUTPUT"
 
 LATEST_FILE="$BASE_DIR/latest.txt"
-LATEST=$(cat "$LATEST_FILE")
 
 URLS_FILE="$BASE_DIR/urls.txt"
 RSS_FILE="$BASE_DIR/rss.jsonl"
 
+docker exec brcrawl_app bash <<EOF
+
+LATEST=$(cat "$LATEST_FILE")
 if [ ! -z "$LATEST" ]; then
     SCRAPE_CMD="$SCRAPE_CMD -a latest='$LATEST'"
 fi
 
-docker exec brcrawl_app bash <<EOF
 cd scraper/
 USER_AGENT="$USER_AGENT" "$SCRAPE_CMD"
 HAS_OUTPUT=$(head -n1 "$SCRAPE_OUTPUT")
