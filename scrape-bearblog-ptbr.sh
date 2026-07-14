@@ -15,7 +15,14 @@ LATEST_FILE="$BASE_DIR/latest.txt"
 URLS_FILE="$BASE_DIR/urls.txt"
 RSS_FILE="$BASE_DIR/rss.jsonl"
 
-docker exec brcrawl_app bash <<EOF
+docker exec -i \
+    -e USER_AGENT="$USER_AGENT" \
+    -e SCRAPE_OUTPUT="$SCRAPE_OUTPUT" \
+    -e LATEST_FILE="$LATEST_FILE" \
+    -e URLS_FILE="$URLS_FILE" \
+    -e RSS_FILE="$RSS_FILE" \
+    -e SCRAPE_CMD="$SCRAPE_CMD" \
+    brcrawl_app bash <<'EOF'
 
 LATEST=$(cat "$LATEST_FILE")
 if [ ! -z "$LATEST" ]; then
